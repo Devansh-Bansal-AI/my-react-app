@@ -2,18 +2,14 @@ import React, { useEffect, useState, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // --- Animation Configuration ---
-const TRANSITION_DURATION = 0.7;
-const INTERVAL_DELAY = 1200;
-const TOTAL_LOAD_TIME_MS = 50000;
-const FADE_OUT_DURATION_MS = 800;
+const TRANSITION_DURATION = 0.7; // Time for one word to glide into the center
+const INTERVAL_DELAY = 1200; // Time the center word remains static
+const TOTAL_LOAD_TIME_MS = 15000; // 5 seconds for quick demonstration
+const FADE_OUT_DURATION_MS = 800; // Duration of the final black screen fade
 const WORD_SCALE_CENTER = 1.2;
 const WORD_SCALE_SIDE = 0.7;
 
-type ElegantPreloaderProps = {
-  onFinish: () => void;
-};
-
-const ElegantPreloader : React.FC<ElegantPreloaderProps> = ({ onFinish }) => {
+const ElegantPreloader = ({ onFinish }) => {
   const words = useMemo(
     () => [
       "Growth",
@@ -29,51 +25,52 @@ const ElegantPreloader : React.FC<ElegantPreloaderProps> = ({ onFinish }) => {
     []
   );
 
-  const [index, setIndex] = useState<number>(0);
-  const [done, setDone] = useState<boolean>(false);
-  const [dynamicOffset, setDynamicOffset] = useState<number>(250);
-  const wordContainerRef = useRef<HTMLDivElement | null>(null);
-  const wordRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const [index, setIndex] = useState(0);
+  const [done, setDone] = useState(false);
+  
+  // Set initial offset large enough to ensure visibility before measurement
+  const [dynamicOffset, setDynamicOffset] = useState(350); 
+  const wordRefs = useRef([]);
   const numWords = words.length;
   const halfWords = Math.floor(numWords / 2);
 
   // --- 1. PRECISE CINEMATIC "KISSING" GAP CALCULATION ---
+  // Calculates the exact distance needed for the side words to "kiss" the center word.
   useEffect(() => {
-    const calculatePreciseOffset = () => {
+    // We wait 50ms for the DOM elements to render and attach the refs correctly.
+    const timer = setTimeout(() => {
+      // Use the current index to find the center and immediate side words
       const currentIndex = index % numWords;
       const leftIndex = (index - 1 + numWords) % numWords;
       const rightIndex = (index + 1) % numWords;
 
-      // Get the DOM elements for current, left, and right words
       const currentEl = wordRefs.current[currentIndex];
       const leftEl = wordRefs.current[leftIndex];
       const rightEl = wordRefs.current[rightIndex];
+      
+      // We rely on the raw width (offsetWidth) for calculation
+      if (currentEl && leftEl && rightEl && currentEl.offsetWidth > 0) {
+        // Calculate the effective width (raw width * scale factor)
+        const currentEffectiveWidth = currentEl.offsetWidth * WORD_SCALE_CENTER;
+        const leftEffectiveWidth = leftEl.offsetWidth * WORD_SCALE_SIDE;
+        const rightEffectiveWidth = rightEl.offsetWidth * WORD_SCALE_SIDE;
 
-      if (currentEl && leftEl && rightEl) {
-        // Get the actual rendered widths (including scale)
-        const currentWidth = currentEl.offsetWidth * WORD_SCALE_CENTER;
-        const leftWidth = leftEl.offsetWidth * WORD_SCALE_SIDE;
-        const rightWidth = rightEl.offsetWidth * WORD_SCALE_SIDE;
-
-        // Calculate the precise kissing distance
-        // The side word should be positioned at: (currentWidth/2 + sideWidth/2)
-        const leftOffset = (currentWidth / 2) + (leftWidth / 2);
-        const rightOffset = (currentWidth / 2) + (rightWidth / 2);
+        // Calculate the "kissing" offset (half of center + half of side)
+        const leftOffset = (currentEffectiveWidth / 2) + (leftEffectiveWidth / 2);
+        const rightOffset = (currentEffectiveWidth / 2) + (rightEffectiveWidth / 2);
         
-        // Use the larger offset to ensure both sides have enough space
+        // The final dynamic offset must accommodate the wider of the two sides (left or right)
         const calculatedOffset = Math.max(leftOffset, rightOffset);
         
-        // Add minimal gap (1-2px) to prevent actual touching which might cause visual issues
+        // Add a small buffer of 2px for visual separation
         setDynamicOffset(Math.ceil(calculatedOffset) + 2);
       }
-    };
-
-    // Use setTimeout to ensure DOM is updated and measurements are accurate
-    const timer = setTimeout(calculatePreciseOffset, 50);
+    }, 50); 
+    
     return () => clearTimeout(timer);
   }, [index, numWords]);
 
-  // --- 2. Fixed Total Load Timer (50s) ---
+  // --- 2. Fixed Total Load Timer (5s) ---
   useEffect(() => {
     const totalTimer = setTimeout(() => {
       setDone(true);
@@ -85,7 +82,7 @@ const ElegantPreloader : React.FC<ElegantPreloaderProps> = ({ onFinish }) => {
 
   // --- 3. Infinite Word Cycling ---
   useEffect(() => {
-    if (!done) {
+    if (!done) { 
       const timer = setTimeout(() => {
         setIndex((prev) => (prev + 1) % numWords);
       }, INTERVAL_DELAY);
@@ -94,40 +91,41 @@ const ElegantPreloader : React.FC<ElegantPreloaderProps> = ({ onFinish }) => {
   }, [index, done, numWords]);
 
   if (done) return null;
-
+  
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-black text-white overflow-hidden z-50 font-['Inter']">
       
-      {/* Title removed, maintaining vertical centering */}
-      <div className="h-20" /> 
+      {/* Static Title */}
+      <h1 className="text-5xl md:text-6xl font-semibold mb-20 text-white/90 tracking-widest absolute top-1/4">
+        Brain Powered
+      </h1>
       
       <div className="relative flex items-center justify-center w-full h-40">
-        <div className="relative flex items-center justify-center" ref={wordContainerRef}>
+        <div className="relative flex items-center justify-center">
           <AnimatePresence mode="wait">
             {words.map((word, i) => {
               let offset = i - index;
-              // Normalize offset to be within [-halfWords, halfWords]
+              
+              // Seamless Loop Logic
               if (offset < -halfWords) offset += numWords;
               else if (offset > halfWords) offset -= numWords;
 
               const x = offset * dynamicOffset;
               const scale = offset === 0 ? WORD_SCALE_CENTER : WORD_SCALE_SIDE;
               const opacity = Math.abs(offset) <= 1 ? (offset === 0 ? 1 : 0.25) : 0;
-              const isEnteringOrExiting = Math.abs(offset) > 1;
 
               return (
                 <motion.div
                   key={word}
-                  ref={(el: HTMLDivElement | null) => wordRefs.current[i] = el}
+                  // Attach ref for measuring
+                  ref={(el) => wordRefs.current[i] = el}
                   data-word-id={word}
                   data-word-index={i}
-                  className="absolute text-6xl md:text-7xl font-bold whitespace-nowrap"
+                  // Added min-w-10 to ensure a measurable width on first render
+                  className="absolute text-6xl md:text-7xl font-bold whitespace-nowrap min-w-10" 
                   initial={{
-                    x: isEnteringOrExiting
-                      ? offset > 0
-                        ? dynamicOffset * 3
-                        : -dynamicOffset * 3
-                      : x,
+                    // Use initial position far off-screen, or 0 to allow measurement
+                    x: 0, 
                     opacity: 0,
                     scale: 0.8,
                   }}
@@ -141,16 +139,18 @@ const ElegantPreloader : React.FC<ElegantPreloaderProps> = ({ onFinish }) => {
                     }
                   }}
                   exit={{
-                    x: offset > 0 ? dynamicOffset * 3 : -dynamicOffset * 3,
+                    // Ensure words exit cleanly off-screen
+                    x: offset > 0 ? dynamicOffset * 3 : -dynamicOffset * 3, 
                     opacity: 0,
                     scale: 0.8,
                     transition: {
                       duration: TRANSITION_DURATION,
-                      ease: "easeInOut",
+                      ease: "easeOut",
                     }
                   }}
                   style={{
-                    zIndex: offset === 0 ? 10 : Math.abs(offset),
+                    // Z-index ensures the center word is always on top
+                    zIndex: offset === 0 ? 10 : 10 - Math.abs(offset),
                     filter:
                       offset === 0
                         ? "brightness(1.5) drop-shadow(0 0 20px rgba(255,255,255,0.4))"
@@ -188,14 +188,43 @@ const ElegantPreloader : React.FC<ElegantPreloaderProps> = ({ onFinish }) => {
   );
 };
 
+// --- Feature Card Component (for demonstration) ---
+const FeatureCard = ({ title, description }) => (
+  <motion.div
+    className="bg-gray-800 p-4 rounded-lg shadow-xl border border-gray-700/50"
+    whileHover={{ scale: 1.02, backgroundColor: "#1f2937" }}
+    transition={{ type: "spring", stiffness: 300 }}
+  >
+    <h3 className="text-xl font-semibold text-teal-400 mb-1 flex items-center">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5 mr-2 text-green-400"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fillRule="evenodd"
+          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+          clipRule="evenodd"
+        />
+      </svg>
+      {title}
+    </h3>
+    <p className="text-gray-400 text-sm">{description}</p>
+  </motion.div>
+);
+
+
 // --- Main App Wrapper ---
 const App = () => {
   const [loading, setLoading] = useState(true);
 
   return (
     <>
+      {/* The Preloader component is rendered while loading is true */}
       {loading && <ElegantPreloader onFinish={() => setLoading(false)} />}
 
+      {/* The main content fades in once loading is false */}
       <AnimatePresence>
         {!loading && (
           <motion.div
@@ -208,7 +237,7 @@ const App = () => {
               Welcome to the Main Application!
             </h2>
             <p className="text-lg text-gray-300 max-w-xl text-center">
-              The cinematic preloader has completed its smooth transition after 50 seconds of infinite cycling.
+              The cinematic preloader has completed its smooth transition after 5 seconds of infinite cycling.
             </p>
             <div className="mt-12 space-y-4 max-w-2xl w-full">
               <FeatureCard
@@ -230,36 +259,5 @@ const App = () => {
     </>
   );
 };
-
-type FeatureCardProps = {
-  title: string;
-  description: string;
-};
-
-const FeatureCard: React.FC<FeatureCardProps> = ({ title, description }) => (
-  <motion.div
-    className="bg-gray-800 p-4 rounded-lg shadow-xl border border-gray-700/50"
-    whileHover={{ scale: 1.02, backgroundColor: "#1f2937" }}
-    transition={{ type: "spring", stiffness: 300 }}
-  >
-    <h3 className="text-xl font-semibold text-teal-400 mb-1 flex items-center">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-5 w-5 mr-2 text-green-400"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path
-          fillRule="evenodd"
-          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-          clipRule="evenodd"
-          
-        />
-      </svg>
-      {title}
-    </h3>
-    <p className="text-gray-400 text-sm">{description}</p>
-  </motion.div>
-);
 
 export default App;
