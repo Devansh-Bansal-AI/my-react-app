@@ -1,90 +1,64 @@
-🎬 Cinematic Preloader Demo
+## 🎬 Cinematic Preloader Demo
 
-A visually refined React application featuring a content-aware, dynamic word-cycling preloader built with Framer Motion and styled using Tailwind CSS v4.
+A visually refined React application featuring a content-aware, dynamic word-cycling preloader built with **Framer Motion** and styled using **Tailwind CSS v4**.
+
 Designed to deliver a smooth, cinematic, premium loading experience.
 
-✨ Preview
+---
+
+## ✨ Preview
+
 <div align="center">
-🖼️ Preloader Demo
-<img src="./public/Preloader.gif" alt="Cinematic Preloader Demo" width="80%" /> </div>
-💡 Key Feature: Elegant Preloader
+    🖼️ Preloader Demo 
+    <img src="./public/Preloader.gif" alt="Cinematic Preloader Demo" width="80%" />
+</div>
 
-ElegantPreloader is the hero of this project — engineered with precision for an elevated user experience.
+---
 
-Feature	Description
-🎞️ Cinematic Flow	Words glide seamlessly into the center with natural, fluid motion.
-💋 “Perfect Kissing Gap”	Dynamic width detection ensures each word aligns exactly with a center-kiss effect.
-📏 Content-Aware Offsets	Spacing adjusts automatically to any word length.
-⚡ Framer Motion Power	Hardware-accelerated transitions with AnimatePresence.
-🎨 Modern Styling	Clean, utility-driven UI with Tailtailwindv4 CSS v4.
-🛠️ Tech Stack
+## 🚀 Key Feature: Elegant Preloader
 
-React 19 (via Vite)
+`ElegantPreloader` is the centerpiece of this project — engineered with precision for perfect spacing, timing, and cinematic flow.
 
-TypeScript
+### 🔥 Highlights
 
-Vite + SWC (@vitejs/plugin-react-swc)
+| Feature | Description |
+| :--- | :--- |
+| **🎞️ Cinematic Flow** | Smooth center-gliding animation for each word. |
+| **💋 Perfect “Kissing Gap”** | Dynamically calculates exact spacing based on real word width. |
+| **📏 Content-Aware Offsets** | Automatically adjusts for all word lengths and speeds. |
+| **⚡ Framer Motion** | Hardware-accelerated transitions with `AnimatePresence`. |
+| **🎨 Tailwind CSS v4** | Modern, utility-first, clean styling. |
 
-Framer Motion v12
+---
 
-Tailwind CSS v4
+## 🛠️ Tech Stack
 
-PostCSS pipeline
+* React 19 (Vite)
+* TypeScript
+* Framer Motion v12
+* Tailwind CSS v4
+* Vite + SWC compiler
+* PostCSS pipeline
 
-🚀 Getting Started
-Prerequisites
+---
 
-Make sure you have installed:
+## 📦 Getting Started
 
-Node.js (LTS recommended)
+### 1️⃣ Prerequisites
 
-npm / yarn / pnpm
+Install:
 
-📦 Installation
+* Node.js (LTS recommended)
+* npm / yarn / pnpm
 
-Clone the repository:
+### 2️⃣ Installation
 
-git clone <your-repo-url>
+```bash
+git clone [https://github.com/Devansh-Bansal-AI/App-preloader](https://github.com/Devansh-Bansal-AI/App-preloader)
 cd my-react-app
-
-
-Install dependencies:
-
-npm install
+Install dependencies:Bashnpm install
 # or yarn install
 # or pnpm install
-
-🔧 Available Scripts
-Command	What It Does
-npm run dev	Runs the dev server with HMR (http://localhost:5173)
-npm run build	Bundles the production build
-npm run preview	Serves the production build locally
-npm run lint	Runs ESLint
-🎨 Tailwind CSS v4 Setup
-
-Tailwind v4 is streamlined.
-Your src/index.css contains:
-
-@import "tailwindcss";
-
+🧩 Available ScriptsCommandDescriptionnpm run devStart dev server with HMR (http://localhost:5173)npm run buildCreate production buildnpm run previewPreview production build locallynpm run lintRun ESLint checks🎨 Tailwind CSS v4 SetupTailwind v4 is streamlined.Your main CSS file (src/index.css) should contain:CSS@import "tailwindcss";
 /* Add your global styles here */
-
-
-No clutter. Pure simplicity.
-
-🎥 Why This Project Exists
-
-This preloader is not just functional — it’s a micro-experience.
-It elevates your app’s first impression, making loading feel intentional and cinematic.
-
-Perfect for:
-
-Portfolios
-
-Creative apps
-
-Content platforms
-
-UI/UX showcases
-
-Motion-styled projects
+No extra configs needed — clean and modern.🎥 Why This Project ExistsThis preloader is designed for interfaces where first impressions matter — delivering a cinematic and premium feel before the main UI loads.Perfect for:Portfolio websitesCreative studiosUI/UX demosAnimated product experiencesModern interactive apps
