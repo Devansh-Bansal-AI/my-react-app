@@ -1,73 +1,90 @@
-# React + TypeScript + Vite
+🎬 Cinematic Preloader Demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A visually refined React application featuring a content-aware, dynamic word-cycling preloader built with Framer Motion and styled using Tailwind CSS v4.
+Designed to deliver a smooth, cinematic, premium loading experience.
 
-Currently, two official plugins are available:
+✨ Preview
+<div align="center">
+🖼️ Preloader Demo
+<img src="./public/Preloader.gif" alt="Cinematic Preloader Demo" width="80%" /> </div>
+💡 Key Feature: Elegant Preloader
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+ElegantPreloader is the hero of this project — engineered with precision for an elevated user experience.
 
-## React Compiler
+Feature	Description
+🎞️ Cinematic Flow	Words glide seamlessly into the center with natural, fluid motion.
+💋 “Perfect Kissing Gap”	Dynamic width detection ensures each word aligns exactly with a center-kiss effect.
+📏 Content-Aware Offsets	Spacing adjusts automatically to any word length.
+⚡ Framer Motion Power	Hardware-accelerated transitions with AnimatePresence.
+🎨 Modern Styling	Clean, utility-driven UI with Tailtailwindv4 CSS v4.
+🛠️ Tech Stack
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+React 19 (via Vite)
 
-## Expanding the ESLint configuration
+TypeScript
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Vite + SWC (@vitejs/plugin-react-swc)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Framer Motion v12
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Tailwind CSS v4
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+PostCSS pipeline
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+🚀 Getting Started
+Prerequisites
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Make sure you have installed:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Node.js (LTS recommended)
+
+npm / yarn / pnpm
+
+📦 Installation
+
+Clone the repository:
+
+git clone <your-repo-url>
+cd my-react-app
+
+
+Install dependencies:
+
+npm install
+# or yarn install
+# or pnpm install
+
+🔧 Available Scripts
+Command	What It Does
+npm run dev	Runs the dev server with HMR (http://localhost:5173)
+npm run build	Bundles the production build
+npm run preview	Serves the production build locally
+npm run lint	Runs ESLint
+🎨 Tailwind CSS v4 Setup
+
+Tailwind v4 is streamlined.
+Your src/index.css contains:
+
+@import "tailwindcss";
+
+/* Add your global styles here */
+
+
+No clutter. Pure simplicity.
+
+🎥 Why This Project Exists
+
+This preloader is not just functional — it’s a micro-experience.
+It elevates your app’s first impression, making loading feel intentional and cinematic.
+
+Perfect for:
+
+Portfolios
+
+Creative apps
+
+Content platforms
+
+UI/UX showcases
+
+Motion-styled projects

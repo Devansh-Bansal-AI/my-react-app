@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 // --- Animation Configuration ---
 const TRANSITION_DURATION = 0.7; // Time for one word to glide into the center
 const INTERVAL_DELAY = 1200; // Time the center word remains static
-const TOTAL_LOAD_TIME_MS = 10000; // Reduced to 3 seconds for quicker testing
+const TOTAL_LOAD_TIME_MS = 20000; // Reduced to 20 seconds for quicker testing
 const FADE_OUT_DURATION_MS = 800; // Duration of the final black screen fade
 const WORD_SCALE_CENTER = 1.2;
 const WORD_SCALE_SIDE = 0.7;
@@ -232,16 +232,16 @@ const App = () => {
             </p>
             <div className="mt-12 space-y-4 max-w-2xl w-full">
               <FeatureCard
-                title="Perfect Cinematic Kissing Gap"
-                description="Side words now precisely touch the center word using half-width offset mathematics for that perfect cinematic look."
+                title=""
+                description=""
               />
               <FeatureCard
-                title="Dynamic Width Calculation"
-                description="Each word's scaled width is calculated in real-time for perfect spacing regardless of word length."
+                title=""
+                description=""
               />
               <FeatureCard
-                title="Seamless Visual Flow"
-                description="The minimal gap creates a continuous visual experience with words appearing to connect."
+                title=""
+                description=""
               />
             </div>
           </motion.div>
